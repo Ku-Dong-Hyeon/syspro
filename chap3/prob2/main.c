@@ -18,6 +18,21 @@ int main(){
 		}
 	}
 
+	for(int i=0; i<4; i++){
+		for(int j=0; j<4-i; j++){
+			if(longest[j]<longest[j+i]){
+				char temp[MAXLINE];
+				strcpy(temp, line[j]);
+				strcpy(line[j],line[j+1]);
+				strcpy(line[j+1],temp);
+
+				int templen = longest[j];
+				longest[j] = longest[j+1];
+				longest[j+1] = templen;
+			}
+		}
+	}
+
 	if (max > 0)
 		printf("%s", longest);
 
