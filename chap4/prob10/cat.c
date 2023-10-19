@@ -7,10 +7,9 @@ int main(int argc, char *argv[]){
 	else
 		fp=fopen(argv[1],"r");
 	c = getc(fp);
-	
+
 	while(c != EOF){
 		putc(c,stdout);
-		c = getc(fp);
 	}
 	fclose(fp);
 	return 0;
