@@ -1,23 +1,43 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 #include <fcntl.h>
-
+#define MAXLINE 10
+#define MAXLINE_LEN 100
 int main(int argc, char *argv[]){
-	int fd, id;
-	char c;
-	char savedText[10][100];
-
-	if(argc < 2){
-		fprintf(stderr, "How to use : %s file\n",argv[0]);
-		exit(1);
-	}
-	if((fd = open(argv[1], O_RDWR)) == -1) {
-		perror(argv[1]);
-		exit(2);
+	FILE *fp;
+	char savedText[MAXLINE][MAXLINE_LEN];
+	char buffer[MAXLINE_LEN];
+	int line;
+	
+	fp = fopen("test.txt","r");
+	if(fp == NULL){
+		printf("FILE OPEN ERROR\n");
+		return 1;
 	}
 	
-	printf("Total Line : %d\n");
+	int count = 0;
 
-	exit(0);
+	printf("File read success\n");
+	
+	while(count < MAXLINE && fgets(buffer,sizeof(buffer),fp) != NULL){
+		strncpy(savedText[count],buffer,MAXLINE_LEN);
+		count++;
+	}
+
+	printf("Total Line : %d\n",count);
+
+	printf("You can choose 1 ~ 4 Line\n");
+	printf("Pls 'Enter' the line to select : ");
+	scanf("%d",&line);
+
+	if (line >= 1 && line <= count){
+		printf("%s",savedText[line-1]);
+	}else{
+		printf("Wrong Line Number\n");
+	}
+	fclose(fp);
+
+	return 0;
 }
