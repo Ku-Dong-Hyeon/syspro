@@ -2,26 +2,35 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
-
+#define MAX 100
 int main(int argc, char *argv[])
 { 
-   int fd1, fd2, n;
-   char buf[BUFSIZ];
-   char* a[BUFSIZ];
-   if (argc != 2) { 
-      fprintf(stderr,"How to use: %s file1 file2\n",        
-               argv[0]); 
-      exit(1); 
-   }
-   if ((fd1 = open(argv[1], O_RDONLY)) ==    -1) {
-      perror(argv[1]);
-      exit(2); 
+   char* n[50];
+   char* name;
+
+   FILE* fp;
+   int cnt = 0;
+
+   fp = fopen("test.txt","r");
+
+   if(fp == NULL){
+	   fprintf(stderr, "File Open Error!\n");
+	   exit(1);
    }
 
-   while ((n = read(fd1, buf, BUFSIZ)) > 0) {
-      printf("%s",buf);
-   	  *a = buf;
-	  printf("%s",*a);
+   for(int i=0; i<5; i++){
+	   name = (char*)malloc(sizeof(char) * MAX);
+	   fgets(name, MAX, fp);
+	   n[i] = name;
    }
-   exit(0); 
+
+   for(int i = 4; i >= 0; i--)
+	   printf("%s",n[i]);
+
+   for(int i = 4; i >= 0; i--)
+	   free(n[i]);
+
+   fclose(fp);
+
+   return 0;
 }

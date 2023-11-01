@@ -1,2 +1,0 @@
-# syspro
-system programing
