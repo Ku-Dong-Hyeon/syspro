@@ -1,18 +1,22 @@
 #include <stdio.h>
 #include <signal.h>
 #include <stdlib.h>
+#include <unistd.h>
 
-void alarmHandler();
+void alarmHandler(int signo);
 
-struct sigaction newact;
-struct sigaction oldact;
-void sig_alarmhandler(int signo);
+struct sigaction act;
 
-int main(void) {
+int main() {
 	int i = 1;
-	newact.sa_handler = sig_alarmhandler;
-	sigfillset(&newact.sa_mask);
-	sigaction(SIGALRM,&newact,&oldact);
+	act.sa_handler = alarmHandler;
+	act.sa_flags = 0;
+	sigemptyset(&act.sa_mask);
+	
+	if (sigaction(SIGALRM,&act,NULL)==-1){
+		exit(0);
+	}
+
 	alarm(5);
 	
 	while(1) {
@@ -20,9 +24,11 @@ int main(void) {
 		printf("%d second \n",i);
 		i++;
 	}
-	printf("can't start");
+	printf("Can't start\n");
+	return 0;
 }
 
-void sig_alarmhandler(int signo){
+void alarmHandler(int signo){
 	printf("Wake up\n");
+	exit(0);
 }
